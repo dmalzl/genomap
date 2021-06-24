@@ -18,7 +18,7 @@ This will generate a coverage track with a 5kb tiling normalized to counts per m
 ## Converting bigWig file to bedGraph with UCSC suitable RGB column
 Now that we have our bigWig file, the next step is to generate a UCSC compatible bedGraph with an itemRGB column. This is done using the `genomap.py` script and is invoked as follows:
 ```bash
-genomap.py -i <bigwigFile> \
+./genomap.py -i <bigwigFile> \
            -bs 5000 \
            --vmin 0 \
            --vmax p75 \

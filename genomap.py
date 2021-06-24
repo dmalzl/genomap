@@ -4,22 +4,22 @@ import pandas as pd
 import pyBigWig as pbw
 import numpy as np
 import argparse as ap
-import matplotlib as mpl
-from matplotlib.colors import BoundaryNorm, Normalize
+import matplotlib.pyplot as plt
+from matplotlib.colors import BoundaryNorm, Normalize, LinearSegmentedColormap
 from matplotlib.cm import ScalarMappable
     
 
 def get_colormap(cmapstring):
     if len(cmapstring.split(',')) > 1:
         colors = cmapstring.split(',')
-        cmap = mpl.colors.LinearSegmentedColormap.from_list(
+        cmap = LinearSegmentedColormap.from_list(
             'custom_cmap',
             colors,
             256
         )
     
     else:
-        cmap = mpl.pyplot.get_cmap(cmapstring)
+        cmap = plt.get_cmap(cmapstring)
     
     return cmap
 
@@ -27,7 +27,7 @@ def get_colormap(cmapstring):
 def bw_to_df(bwfile, binsize):
     bw = pbw.open(bwfile)
     df = pd.DataFrame(
-        columns = ['chrom', 'start', 'end', valuename]
+        columns = ['chrom', 'start', 'end', 'counts']
     )
     for chrom in bw.chroms().keys():
         intervals = []
@@ -96,7 +96,7 @@ parser.add_argument(
 )
 parser.add_argument(
     '--colormap',
-    default = 'coolwarm'
+    default = 'coolwarm',
     help = 'Either a named matplotlib colormap or a sequence of comma-separated colors to use as colormap'
 )
 parser.add_argument(
@@ -104,14 +104,14 @@ parser.add_argument(
     '--outputFile',
     required = True
 )
+args = parser.parse_args()
 
 cmap = get_colormap(args.colormap)
-chroms = get_list_of_chromosomes(args.chromosomes)
 df = bw_to_df(
     args.input,
     args.binsize
 )
-counts = df.loc[:, 'count'].copy()
+counts = df.loc[:, 'counts'].copy()
 counts[counts == 0] = np.nan
 vmin, vmax = get_vminmax(
     counts,
@@ -120,7 +120,7 @@ vmin, vmax = get_vminmax(
 )
 bounds = BoundaryNorm(np.linspace(vmin, vmax, 10), 9, clip = True)
 norm = Normalize(0, 8)
-df['rgb'] = df['count'].apply(
+df['rgb'] = df['counts'].apply(
     lambda x: ','.join(
         str(int(round(i*255))) for i in cmap(norm(bounds(x)))[:-1]
     )
