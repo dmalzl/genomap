@@ -1,6 +1,15 @@
 # genomap
 An easy to use tool to generate heatmap like tracks for the UCSC Genome Browser
 
+## Setting up the work envrionment
+In order to use `genomap.py` you will need a working Python 3 including [`pandas`](https://pandas.pydata.org/), [`matplotlib`](https://matplotlib.org/), [`numpy`](https://numpy.org/) and [`pyBigWig`](https://github.com/deeptools/pyBigWig). The most straightforward way to get this, is to download and install [`miniconda`](https://docs.conda.io/en/latest/miniconda.html) and use the `environment.yml` file to generate a virtual environment containing everything we need.
+```bash
+git clone https://github.com/dmalzl/genomap.git
+cd genomap
+conda env create -f environment.yml
+conda activate genomapy
+```
+
 ## Generating a bigWig file from your BAMs
 The easiest way to generate a bigWig file from your alignments is to use the [deepTools](https://deeptools.readthedocs.io/en/develop/index.html) suites [`bamCoverage`](https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html)
 ```bash
