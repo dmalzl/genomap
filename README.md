@@ -33,7 +33,7 @@ The last step is to convert the bedGraph to it's binary twin the bigBed. This is
 cat <bedGraphFile> | sort -k1,1 -k2,2n > <sortedBedGraph>
 bedToBigBed <sortedBedGraph> chrom.sizes <outputBigBed>
 ```
-The chrom.sizes file is a generic tab-separated file containing two columns describing the name and the size of the chromosomes contained in the bedGraph file.
+The chrom.sizes file is a generic tab-separated file containing two columns describing the name and the size of the chromosomes contained in the bedGraph file. This will also generate a PDF containing the colorbar corresponding to the colors in the itemRGB, which will be saved in the same directory as the outputBedGraph. Alternatively, one can use the `--colorbarFile` parameter to set a filepath manually.
 
 ## Add to TrackHub on UCSC
 The last step is to add the generated bigBed to you UCSC TrackHub using the following directives
