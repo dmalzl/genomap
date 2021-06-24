@@ -1,0 +1,11 @@
+name: genomapy
+channels:
+  - defaults
+dependencies:
+  - pip=21.1.2
+  - python=3.9.5
+  - pip:
+    - matplotlib==3.4.2
+    - pandas==1.2.5
+    - pybigwig==0.3.18
+    - numpy==1.21.0
