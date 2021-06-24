@@ -59,7 +59,7 @@ def get_vminmax(values, vminarg, vmaxarg):
     for arg in [vminarg, vmaxarg]:
         if arg.startswith('p'):
             bounds.append(
-                np.percentile(values, float(arg[1:]))
+                np.nanpercentile(values, float(arg[1:]))
             )
         else:
             bounds.append(float(arg[1:]))
@@ -118,7 +118,11 @@ vmin, vmax = get_vminmax(
     args.vmin,
     args.vmax
 )
-bounds = BoundaryNorm(np.linspace(vmin, vmax, 10), 9, clip = True)
+bounds = BoundaryNorm(
+    np.linspace(vmin, vmax, 10), 
+    9, 
+    clip = True
+)
 norm = Normalize(0, 8)
 df['rgb'] = df['counts'].apply(
     lambda x: ','.join(
