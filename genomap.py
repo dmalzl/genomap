@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
 
+import os
 import pandas as pd
 import pyBigWig as pbw
 import numpy as np
 import argparse as ap
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from matplotlib.colors import BoundaryNorm, Normalize, LinearSegmentedColormap
 from matplotlib.cm import ScalarMappable
     
+
+def get_cbar_outfile(cbarfile, outputfile):
+    if not cbarfile:
+        basedir = os.path.dirname(outputfile)
+        cbarfile = os.path.join(
+            basedir,
+            'colorbar.pdf'
+        )
+    
+    return cbarfile
+
 
 def get_colormap(cmapstring):
     if len(cmapstring.split(',')) > 1:
@@ -100,6 +113,12 @@ parser.add_argument(
     help = 'Either a named matplotlib colormap or a sequence of comma-separated colors to use as colormap'
 )
 parser.add_argument(
+    '-co',
+    '--colorbarFile',
+    default = None,
+    help = 'name of the file to where the colorbar should be saved. If not given will be saved as colorbar.pdf in the basedir of the output file'
+)
+parser.add_argument(
     '-o',
     '--outputFile',
     required = True
@@ -138,3 +157,18 @@ df[columns].to_csv(
     header = False,
     index = False
 )
+
+cbarfile = get_cbar_outfile(
+    args.colorbarFile,
+    args.outputFile
+)
+fig = plt.figure()
+ax = fig.add_axes([0.5, 0.1, 0.04, 0.8])
+cb = mpl.colorbar.ColorbarBase(
+    ax,
+    cmap = cmap,
+    boundaries = bounds.boundaries
+)
+fig.set_figheight(5)
+fig.set_figwidth(5)
+fig.savefig(cbarfile)
