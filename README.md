@@ -45,3 +45,8 @@ bigDataUrl      <path/to/bigBed>
 itemRgb         on
 type    bigBed 9 .
 ```
+
+# General comment on usage
+The UCSC Genome Browser is an online tool to display sequencing an other related data. The versatility also brings some caveats such as a requirement for restriction of colorspace in cases of the itemRGB column of bigBed files as well as the number of regions that can simultaneously be displayed, which seems to be restricted to 1000 regions. Thus, a general point for consideration is the size of the regions one wants to view on the browser, since the heatmap will turn black for regions that span more than 1000 bigBed bins. An example would be as follows:
+
+Consider viewing a 10Mb region on would need at least a binsize of 10,000,000 / 1,000 = 10,000 in order to be able to enjoy the colored version of the bigBed.
